@@ -8,7 +8,7 @@ from test.conftest import async_session_maker
 
 
 async def test_create_users():
-    async with async_session_maker() as session:
+    async with async_session_maker() as session:  # Заполняю тестовую бд данными
         session.add(UserModel(username='test111test', email='test1@example.com', registration_date=date(2024, 2, 9)))
         session.add(UserModel(username='test12test', email='test2@example.com', registration_date=date(2024, 2, 8)))
         session.add(UserModel(username='test1test', email='test3@example.com', registration_date=date(2024, 2, 7)))
@@ -19,12 +19,18 @@ async def test_create_users():
 
 
 async def test_get_user_registered_in_the_last_week():
+    """
+    Тестирует количество пользователей, зарегистрированных за последние 7 дней.
+    """
     async with async_session_maker() as session:
         count_users = await get_user_registered_in_the_last_week(session=session)
         assert count_users == 4
 
 
 async def test_top_five_users_with_long_names():
+    """
+    Тестирует топ-5 пользователей с самыми длинными именами
+    """
     async with async_session_maker() as session:
         top_user_names = [
             'test111test',
@@ -38,12 +44,18 @@ async def test_top_five_users_with_long_names():
 
 
 async def test_number_of_specific_domains():
+    """
+    Тестирует долю пользователей с адресами электронной почты 'example.com'
+    """
     async with async_session_maker() as session:
         result = await number_of_specific_domains(session=session)
         assert result == '100.00%'
 
 
 async def test_get_information(async_client: AsyncClient):
+    """
+    Тестирует вывод данных, get запрос
+    """
     response = await async_client.get('/information')
     assert response.status_code == 200
     assert response.json() == {
