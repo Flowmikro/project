@@ -12,29 +12,39 @@ router = APIRouter()
 
 @router.get('/get-users', response_model=Page[UserPaginateSchema])
 async def get_users(session: AsyncSession = Depends(get_session)) -> Page[UserPaginateSchema]:
-    query = select(UserModel).order_by(UserModel.id)
-    result = await session.execute(query)
+    """
+    Вывод пользователей с пагинацией
+    """
+    result = await session.execute(select(UserModel).order_by(UserModel.id))
     users = result.scalars().all()
     return paginate(users)
 
 
 @router.post('/create-user')
 async def create_user(user: UserSchema, session: AsyncSession = Depends(get_session)) -> UserSchema:
+    """
+    Создание пользователя
+    """
     session.add(UserModel(**user.model_dump()))
     await session.commit()
     return user
 
 
 @router.patch('/update-user/{user_id}')
-async def update_user(user_id: int, user_update: UserUpdateSchema,
-                      session: AsyncSession = Depends(get_session)) -> dict:
+async def update_user(
+        user_id: int,
+        user_update: UserUpdateSchema,
+        session: AsyncSession = Depends(get_session)
+) -> dict:
+    """
+    Обновление пользователя
+    """
     user_db = await session.get(UserModel, user_id)
 
     if user_db:
         for attr, value in user_update.model_dump(exclude_unset=True).items():
             setattr(user_db, attr, value)
         await session.commit()
-
         return {"message": "User updated successfully"}
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
@@ -42,6 +52,9 @@ async def update_user(user_id: int, user_update: UserUpdateSchema,
 
 @router.delete('/delete-user/{user_id}')
 async def delete_user(user_id: int, session: AsyncSession = Depends(get_session)) -> dict:
+    """
+    Удаление пользователя
+    """
     user = await session.get(UserModel, user_id)
     if user:
         await session.delete(user)
