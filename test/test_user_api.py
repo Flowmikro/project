@@ -37,7 +37,7 @@ async def test_update_user(async_client: AsyncClient):
         "email": "newtest@test.com"
     })
     assert response.status_code == 200
-    assert response.json() == {"message": "User updated successfully"}
+    assert response.json() == {"message": "Пользователь обновлен успешно"}
 
 
 async def test_update_user_id_not_found(async_client: AsyncClient):
@@ -50,7 +50,7 @@ async def test_update_user_id_not_found(async_client: AsyncClient):
         "email": "newtest@test.com"
     })
     assert response.status_code == 404
-    assert response.json() == {'detail': 'User not found'}
+    assert response.json() == {'detail': 'Пользователь не найден'}
 
 
 async def test_delete_user(async_client: AsyncClient):

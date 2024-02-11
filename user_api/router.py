@@ -45,9 +45,9 @@ async def update_user(
         for attr, value in user_update.model_dump(exclude_unset=True).items():
             setattr(user_db, attr, value)
         await session.commit()
-        return {"message": "User updated successfully"}
+        return {"message": "Пользователь обновлен успешно"}
     else:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Пользователь не найден')
 
 
 @router.delete('/delete-user/{user_id}')
