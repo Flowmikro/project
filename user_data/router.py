@@ -10,6 +10,9 @@ router = APIRouter()
 
 @router.get('/information')
 async def get_information(session: AsyncSession = Depends(get_session)) -> dict:
+    """
+    Вывод данных
+    """
     return {
         'Количество пользователей, зарегистрированных за последние 7 дней': await data.get_user_registered_in_the_last_week(session=session),
         'Топ-5 пользователей с самыми длинными именами': await data.top_five_users_with_long_names(session=session),
