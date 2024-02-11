@@ -37,9 +37,9 @@ https://github.com/Flowmikro/project.git
 Перейти в директорию
 ```commandline
 cd project
-```
-<h3>Запустить проект можно двумя способами</h3>
-<h4>Первый способ через docker</h4>
+```  
+<h3>Запустить проект можно двумя способами</h3>  
+<h4>Первый способ через docker</h4>  
 ```commandline
 docker build . -t fastapi_app:latest
 ```
