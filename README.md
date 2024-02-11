@@ -37,8 +37,8 @@ https://github.com/Flowmikro/project.git
 Перейти в директорию
 ```commandline
 cd project
-```  
-
+```
+dsfsf
 ```commandline
 docker build . -t fastapi_app:latest
 ```
