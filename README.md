@@ -38,8 +38,8 @@ https://github.com/Flowmikro/project.git
 ```commandline
 cd project
 ```
-<h3>Запустить проект можно двумя способами</h3>  
-<h4>Первый способ через docker</h4>  
+#### Запустить проект можно двумя способами  
+#### Первый способ через docker
 ```commandline
 docker build . -t fastapi_app:latest
 ```
