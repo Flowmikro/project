@@ -50,7 +50,7 @@ docker run -p 8000:8000 fastapi_app
 ```commandline
 http://localhost:8000/docs
 ```
-<h4>Второй способ</h4>
+#### Второй способ
 Активировать виртуальную вреду на Mac/Linux
 ```commandline
 python3 -m venv venv
