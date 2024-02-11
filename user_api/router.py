@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_pagination import paginate, Page, add_pagination
 from sqlalchemy import select
@@ -25,9 +26,12 @@ async def create_user(user: UserSchema, session: AsyncSession = Depends(get_sess
     """
     Создание пользователя
     """
-    session.add(UserModel(**user.model_dump()))
-    await session.commit()
-    return user
+    try:
+        session.add(UserModel(**user.model_dump()))
+        await session.commit()
+        return user
+    except IntegrityError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Такая почта уже существует')
 
 
 @router.patch('/update-user/{user_id}')
@@ -39,15 +43,18 @@ async def update_user(
     """
     Обновление пользователя
     """
-    user_db = await session.get(UserModel, user_id)
+    try:
+        user_db = await session.get(UserModel, user_id)
 
-    if user_db:
-        for attr, value in user_update.model_dump(exclude_unset=True).items():
-            setattr(user_db, attr, value)
-        await session.commit()
-        return {"message": "Пользователь обновлен успешно"}
-    else:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Пользователь не найден')
+        if user_db:
+            for attr, value in user_update.model_dump(exclude_unset=True).items():
+                setattr(user_db, attr, value)
+            await session.commit()
+            return {"message": "Пользователь обновлен успешно"}
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Пользователь не найден')
+    except IntegrityError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Такая почта уже существует')
 
 
 @router.delete('/delete-user/{user_id}')
