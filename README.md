@@ -73,3 +73,11 @@ alembic upgrade head
 ```commandline
 pytest test/            
 ```
+Запустить uvicorn
+```commandline
+uvicorn main:app --reload
+```
+Перейти по адресу
+```commandline
+http://127.0.0.1:8000/docs
+```
