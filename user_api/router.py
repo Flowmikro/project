@@ -7,6 +7,7 @@ from sqlalchemy import select
 from app_config.session_manager import get_session
 from models.user_model import UserModel
 from .schemas import UserSchema, UserUpdateSchema, UserPaginateSchema
+from fastapi_pagination.utils import disable_installed_extensions_check
 
 router = APIRouter()
 
@@ -71,4 +72,5 @@ async def delete_user(user_id: int, session: AsyncSession = Depends(get_session)
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Пользователь не найден')
 
 
+disable_installed_extensions_check()
 add_pagination(router)
