@@ -9,6 +9,9 @@ SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 
 
 async def get_session() -> AsyncSession:
+    """
+    Функция для получения асинхронной сессии SQLAlchemy
+    """
     async with SessionLocal() as session:
         yield session
 
@@ -26,4 +29,7 @@ convention = {
 
 
 class Base(DeclarativeBase):
+    """
+    Базовый класс для объявления моделей SQLAlchemy
+    """
     metadata = MetaData(naming_convention=convention)  # type: ignore
