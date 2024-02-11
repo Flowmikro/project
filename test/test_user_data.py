@@ -41,3 +41,19 @@ async def test_number_of_specific_domains():
     async with async_session_maker() as session:
         result = await number_of_specific_domains(session=session)
         assert result == '100.00%'
+
+
+async def test_get_information(async_client: AsyncClient):
+    response = await async_client.get('/information')
+    assert response.status_code == 200
+    assert response.json() == {
+        'Количество пользователей, зарегистрированных за последние 7 дней': 4,
+        'Топ-5 пользователей с самыми длинными именами': [
+            'test111test',
+            'test12test',
+            'test1test',
+            'test4tes',
+            'test5t',
+        ],
+        "Доля пользователей с доменом электронной почты 'example.com'": '100.00%'
+    }
